@@ -9,9 +9,18 @@ const Header = (props) => {
 const Content = (props) => {
     return (
         <div>
-            <p>{props.part1} {props.exercise1}</p>
-            <p>{props.part2} {props.exercise2}</p>
-            <p>{props.part3} {props.exercise3}</p>
+            <Part part={props.parts[0]}/>
+            <Part part={props.parts[1]}/>
+            <Part part={props.parts[2]}/>
+        </div>
+    )
+
+}
+
+const Part = (props) => {
+    return (
+        <div>
+            <p>{props.part.name} {props.part.exercise}</p>
         </div>
     )
 }
@@ -36,19 +45,32 @@ const App = () => {
     const part3 = 'State of a component'
     const exercises3 = 14
 
+    // Array of body
+    const parts = [
+        {
+            name: part1,
+            exercise: exercises1
+        },
+        {
+            name: part2,
+            exercise: exercises2
+        },
+        {
+            name: part3,
+            exercise: exercises3
+        }
+    ]
+
     // Total
 
     return (
         <div>
             <Header course={course}/>
-            <Content part1={part1} exercise1={exercises1}
-                     part2={part2} exercise2={exercises2}
-                     part3={part3} exercise3={exercises3}/>
+            <Content parts={parts}/>
             <Total exercises={exercises1 + exercises2 + exercises3}/>
             {/*<p>Number of exercises {exercises1 + exercises2 + exercises3}</p>*/}
         </div>
     )
 }
-
 
 export default App
