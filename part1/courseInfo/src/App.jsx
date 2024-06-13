@@ -1,58 +1,54 @@
 const Header = (props) => {
     return (
-        <h1>{props.course}</h1>
+        <div>
+            <h1>{props.course}</h1>
+        </div>
     )
-};
-
-const Part = (props) => {
-    return (
-        <p>{props.part} {props.numberOfExercises}</p>
-    )
-};
+}
 
 const Content = (props) => {
     return (
         <div>
-            <Part part={props.partzzz[0].name} numberOfExercises={props.partzzz[0].exercises}/>
-            <Part part={props.partzzz[1].name} numberOfExercises={props.partzzz[1].exercises}/>
-            <Part part={props.partzzz[2].name} numberOfExercises={props.partzzz[2].exercises}/>
+            <p>{props.part1} {props.exercise1}</p>
+            <p>{props.part2} {props.exercise2}</p>
+            <p>{props.part3} {props.exercise3}</p>
         </div>
     )
-};
+}
 
 const Total = (props) => {
     return (
-        <p>Number of
-            exercises {props.partszzz[0].exercises + props.partszzz[1].exercises + props.partszzz[2].exercises}</p>
+        <div>
+            <p>Number of exercises {props.exercises}</p>
+        </div>
     )
-};
+}
 
 const App = () => {
-        const course = {
-            name: "Half Stack application development",
-            parts: [
-                {
-                    name: "Fundamentals of React",
-                    exercises: 10
-                },
-                {
-                    name: "Using props to pass data",
-                    exercises: 7
-                },
-                {
-                    name: "State of a component",
-                    exercises: 14
-                },
-            ]
-        }
-        return (
-            <div>
-                <Header course={course.name}/>
-                <Content partzzz={course.parts}/>
-                <Total partszzz={course.parts}/>
-            </div>
-        )
-    }
-;
+    // Header
+    const course = 'Half Stack application development'
+
+    // Body
+    const part1 = 'Fundamentals of React'
+    const exercises1 = 10
+    const part2 = 'Using props to pass data'
+    const exercises2 = 7
+    const part3 = 'State of a component'
+    const exercises3 = 14
+
+    // Total
+
+    return (
+        <div>
+            <Header course={course}/>
+            <Content part1={part1} exercise1={exercises1}
+                     part2={part2} exercise2={exercises2}
+                     part3={part3} exercise3={exercises3}/>
+            <Total exercises={exercises1 + exercises2 + exercises3}/>
+            {/*<p>Number of exercises {exercises1 + exercises2 + exercises3}</p>*/}
+        </div>
+    )
+}
+
 
 export default App
