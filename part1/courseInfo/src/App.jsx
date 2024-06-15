@@ -28,7 +28,7 @@ const Part = (props) => {
 const Total = (props) => {
     return (
         <div>
-            <p>Number of exercises {props.exercises}</p>
+            <p>Number of exercises {props.parts[0].exercise + props.parts[1].exercise + props.parts[2].exercise}</p>
         </div>
     )
 }
@@ -36,11 +36,6 @@ const Total = (props) => {
 const App = () => {
     // Header
     const course = 'Half Stack application development'
-
-    // Body
-    const exercises1 = 10
-    const exercises2 = 7
-    const exercises3 = 14
 
     // Array of body
     const parts = [
@@ -64,7 +59,7 @@ const App = () => {
         <div>
             <Header course={course}/>
             <Content parts={parts}/>
-            <Total exercises={exercises1 + exercises2 + exercises3}/>
+            <Total parts={parts}/>
         </div>
     )
 }
