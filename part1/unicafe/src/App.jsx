@@ -15,13 +15,25 @@ const StatisticLine = ({category, value}) => {
 
     if (category.toLowerCase() === "positive") {
         return (
-            <p>{category} {value} %</p>
+            <tr>
+                <td>
+                    {category}
+                </td>
+                <td>
+                    {value} %
+                </td>
+            </tr>
         )
     }
     return (
-        <div>
-            <p>{category} {value}</p>
-        </div>
+        <tr>
+            <td>
+                {category}
+            </td>
+            <td>
+                {value}
+            </td>
+        </tr>
 
     )
 
@@ -42,14 +54,17 @@ const Statistics = (props) => {
     const positive = goodValue / allValues * 100
 
     return (
-        <>
+        <table>
+            <tbody>
             <StatisticLine category={"good"} value={goodValue}/>
             <StatisticLine category={"neutral"} value={neutralValue}/>
             <StatisticLine category={"bad"} value={badValue}/>
             <StatisticLine category={"all"} value={allValues}/>
             <StatisticLine category={"average"} value={average}/>
             <StatisticLine category={"positive"} value={positive}/>
-        </>
+            </tbody>
+        </table>
+
     )
 }
 
