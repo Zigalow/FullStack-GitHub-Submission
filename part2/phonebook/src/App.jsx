@@ -11,6 +11,7 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     const [searchWord, setSearchWord] = useState("")
     const [notificationMessage, setNotificationMessage] = useState("Add, update or delete a record in the phonebook")
+    const [notificationType, setNotificationType] = useState("success")
 
     useEffect(() => {
         personService
@@ -46,6 +47,7 @@ const App = () => {
             .create(personObject)
             .then(returnedPerson => {
                 setPersons(persons.concat(returnedPerson))
+                setNotificationType("success")
                 setNotificationMessage(`Added ${personObject.name}`)
                 setNewName("")
                 setNewNumber("")
@@ -61,8 +63,14 @@ const App = () => {
             .then(returnedPerson => {
                 setPersons(persons.map(p => p.id !== personToUpdate.id ? p : returnedPerson))
                 setNotificationMessage(`Updated ${updatedPerson.name}`)
+                setNotificationType("success")
                 setNewName("")
                 setNewNumber("")
+            })
+            .catch(error => {
+                setPersons(persons.filter(p => p.id !== personToUpdate.id))
+                setNotificationMessage(`Information of ${updatedPerson.name} has already been removed from the server`)
+                setNotificationType("error")
             })
     }
 
@@ -72,7 +80,7 @@ const App = () => {
         if (shouldDelete) {
             personService
                 .deleteObject(id)
-                .then(deletedPerson  => {
+                .then(deletedPerson => {
                     setPersons(persons.filter(p => p.id !== id))
                     setNotificationMessage(`Deleted ${deletedPerson.name}`)
                 })
@@ -97,7 +105,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={notificationMessage}/>
+            <Notification message={notificationMessage} type={notificationType}/>
             <Filter searchWord={searchWord} handleSearchChange={handleSearchChange}/>
             <h3>add a new </h3>
 
