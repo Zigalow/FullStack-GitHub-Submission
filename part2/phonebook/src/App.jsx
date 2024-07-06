@@ -30,8 +30,14 @@ const App = () => {
         ).includes(personObject.name)
 
         if (nameIsDuplicate) {
-            alert(`${newName} is already added to phonebook`)
-            return
+            const shouldReplace = window.confirm(`'${newName}' is already in the phonebook, replace the old number with a new one?`)
+
+            if (shouldReplace) {
+                handleDuplicate(personObject, newNumber)
+                return
+            } else {
+                return
+            }
         }
 
         personService
@@ -43,13 +49,26 @@ const App = () => {
             })
     }
 
+    const handleDuplicate = (newPersonObject, newNumber) => {
+        const personToUpdate = persons.find(p => p.name.includes(newPersonObject.name))
+        const updatedPerson = {...personToUpdate, number: newNumber}
+
+        personService
+            .update(personToUpdate.id, updatedPerson)
+            .then(returnedPerson => {
+                setPersons(persons.map(p => p.id !== personToUpdate.id ? p : returnedPerson))
+                setNewName("")
+                setNewNumber("")
+            })
+    }
+
     const deletePerson = (personName, id) => {
-        const shouldDelete = window.confirm(`Delete ${personName}`)
+        const shouldDelete = window.confirm(`Delete ${personName}?`)
 
         if (shouldDelete) {
             personService
                 .deleteObject(id)
-                .then(response => {
+                .then(/*deletedPerson*/ () => {
                     setPersons(persons.filter(p => p.id !== id))
                 })
         }
