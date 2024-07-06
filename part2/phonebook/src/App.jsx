@@ -3,12 +3,14 @@ import Filter from "./Components/Filter.jsx";
 import PersonForm from "./Components/PersonForm.jsx";
 import Persons from "./Components/Persons.jsx";
 import personService from "./Services/persons.js"
+import Notification from "./Components/Notification.jsx";
 
 const App = () => {
     const [persons, setPersons] = useState([])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
     const [searchWord, setSearchWord] = useState("")
+    const [notificationMessage, setNotificationMessage] = useState("Add, update or delete a record in the phonebook")
 
     useEffect(() => {
         personService
@@ -44,6 +46,7 @@ const App = () => {
             .create(personObject)
             .then(returnedPerson => {
                 setPersons(persons.concat(returnedPerson))
+                setNotificationMessage(`Added ${personObject.name}`)
                 setNewName("")
                 setNewNumber("")
             })
@@ -57,6 +60,7 @@ const App = () => {
             .update(personToUpdate.id, updatedPerson)
             .then(returnedPerson => {
                 setPersons(persons.map(p => p.id !== personToUpdate.id ? p : returnedPerson))
+                setNotificationMessage(`Updated ${updatedPerson.name}`)
                 setNewName("")
                 setNewNumber("")
             })
@@ -68,8 +72,9 @@ const App = () => {
         if (shouldDelete) {
             personService
                 .deleteObject(id)
-                .then(/*deletedPerson*/ () => {
+                .then(deletedPerson  => {
                     setPersons(persons.filter(p => p.id !== id))
+                    setNotificationMessage(`Deleted ${deletedPerson.name}`)
                 })
         }
     }
@@ -92,6 +97,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={notificationMessage}/>
             <Filter searchWord={searchWord} handleSearchChange={handleSearchChange}/>
             <h3>add a new </h3>
 
@@ -103,7 +109,6 @@ const App = () => {
             <h2>Numbers</h2>
             <Persons filteredPersons={filteredPersons} deletePerson={deletePerson}/>
         </div>
-
     )
 }
 
