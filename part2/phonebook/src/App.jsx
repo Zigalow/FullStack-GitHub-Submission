@@ -2,7 +2,7 @@ import {useState, useEffect} from "react";
 import Filter from "./Components/Filter.jsx";
 import PersonForm from "./Components/PersonForm.jsx";
 import Persons from "./Components/Persons.jsx";
-import axios from "axios";
+import personService from "./Services/persons.js"
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -11,10 +11,10 @@ const App = () => {
     const [searchWord, setSearchWord] = useState("")
 
     useEffect(() => {
-        axios
-            .get("http://localhost:3001/persons")
-            .then(response => {
-                setPersons(response.data)
+        personService
+            .getAll()
+            .then(initialPersons => {
+                setPersons(initialPersons)
             })
     }, [])
 
@@ -34,10 +34,10 @@ const App = () => {
             return
         }
 
-        axios
-            .post("http://localhost:3001/persons", personObject)
-            .then(response => {
-                setPersons(persons.concat(personObject))
+        personService
+            .create(personObject)
+            .then(returnedPerson => {
+                setPersons(persons.concat(returnedPerson))
                 setNewName("")
                 setNewNumber("")
             })
