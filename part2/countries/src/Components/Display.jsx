@@ -1,9 +1,7 @@
 import Country from "./Country.jsx"
 
-const Display = ({countries}) => {
-
-    console.log(countries)
-
+const Display = ({countries, showSpecificCountry}) => {
+    
     if (countries.length > 10) {
         return (
             <>
@@ -23,6 +21,7 @@ const Display = ({countries}) => {
             {countries.map(c => (
                 <li key={c.name.common}>
                     {c.name.common}
+                    <button onClick={() => showSpecificCountry(c.name.common)}>show</button>
                 </li>
             ))}
         </>

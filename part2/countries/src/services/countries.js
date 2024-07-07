@@ -8,7 +8,7 @@ const getAll = () => {
 }
 
 const getSpecific = (countryName) => {
-    const request = axios.get(`${baseUrl}/api/${countryName}`)
+    const request = axios.get(`${baseUrl}/api/name/${countryName}`)
     return request.then(response => response.data)
 }
 

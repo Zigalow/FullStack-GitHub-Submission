@@ -2,6 +2,8 @@ import {useEffect, useState} from "react";
 import Searchbar from "./Components/Searchbar.jsx";
 import countryService from "./services/countries.js"
 import Display from "./Components/Display.jsx"
+import country from "./Components/Country.jsx";
+import Country from "./Components/Country.jsx";
 
 const App = () => {
     const [countries, setCountries] = useState([])
@@ -15,20 +17,23 @@ const App = () => {
             })
     }, [])
 
+    const showSpecificCountry = (countryName) => {
+        setSearchWord(countryName.toLowerCase())
+    }
+
     const handleSearchChange = (event) => {
         event.preventDefault()
-        setSearchWord(event.target.value)
+        setSearchWord(event.target.value.toLowerCase())
     }
 
     const filteredCountries = searchWord === ""
         ? countries
         : countries.filter(c => c.name.common.toLowerCase().includes(searchWord))
 
-    console.log(countries)
     return (
         <div>
             <Searchbar searchWord={searchWord} handleSearchChange={handleSearchChange}/>
-            <Display countries={filteredCountries}/>
+            <Display countries={filteredCountries} showSpecificCountry={showSpecificCountry}/>
         </div>
     )
 }
