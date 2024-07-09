@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://studies.cs.helsinki.fi/restcountries/"
+const baseUrl = "https://studies.cs.helsinki.fi/restcountries"
 
 const getAll = () => {
     const request = axios.get(`${baseUrl}/api/all`)
@@ -12,4 +12,4 @@ const getSpecific = (countryName) => {
     return request.then(response => response.data)
 }
 
-export default {getAll, getSpecific}
+export default { getAll, getSpecific }

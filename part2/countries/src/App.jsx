@@ -2,8 +2,6 @@ import {useEffect, useState} from "react";
 import Searchbar from "./Components/Searchbar.jsx";
 import countryService from "./services/countries.js"
 import Display from "./Components/Display.jsx"
-import country from "./Components/Country.jsx";
-import Country from "./Components/Country.jsx";
 
 const App = () => {
     const [countries, setCountries] = useState([])

@@ -3,14 +3,10 @@ const Notification = ({message, type}) => {
         return null
     }
 
-    console.log("type", type)
-    
     const className = !type.includes("success")
         ? "error"
         : "notification"
 
-    console.log("className", className)
-    
     return (
         <div className={className}>
             {message}
