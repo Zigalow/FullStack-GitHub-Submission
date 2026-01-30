@@ -1,18 +1,20 @@
 import Country from "./Country.jsx"
 
-const Display = ({countries, showSpecificCountry}) => {
-    
+const Display = ({ country, countries, showSpecificCountry }) => {
+
+
+    if (country) {
+        return (
+            <Country country={country} />
+        )
+
+    }
+
     if (countries.length > 10) {
         return (
             <>
                 <p>Too many matches, specify another filter</p>
             </>
-        )
-    }
-
-    if (countries.length === 1) {
-        return (
-            <Country country={countries[0]}/>
         )
     }
 

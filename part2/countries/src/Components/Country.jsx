@@ -1,14 +1,14 @@
 import countries from "../services/countries.js";
 
-const Country = ({country}) => {
+const Country = ({ country }) => {
     return (
         <>
             <h1>{country.name.common}</h1>
-            <p>capital {country.capital[0]}</p>
-            <p>area {country.area}</p>
+            <p>Capital {country.capital[0]}</p>
+            <p>Area {country.area}</p>
 
             <div>
-                <b>languages:</b>
+                <h2>Languages</h2>
                 <ul>
                     {Object.values(country.languages).map(l => (
                         <li key={l}>{l}</li>
@@ -16,13 +16,11 @@ const Country = ({country}) => {
                 </ul>
             </div>
             <div>
-                <img 
+                <img
                     src={country.flags.png}
                     width={200}
                 />
-                
             </div>
-
         </>
     )
 }
