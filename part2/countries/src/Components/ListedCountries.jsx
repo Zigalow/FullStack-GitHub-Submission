@@ -1,11 +1,11 @@
 import Country from "./Country.jsx"
 
-const Display = ({ country, countries, showSpecificCountry }) => {
+const ListedCountries = ({ country, weather, countries, isNew, showSpecificCountry }) => {
 
 
     if (country) {
         return (
-            <Country country={country} />
+            <Country country={country} weather={weather} />
         )
 
     }
@@ -14,6 +14,21 @@ const Display = ({ country, countries, showSpecificCountry }) => {
         return (
             <>
                 <p>Too many matches, specify another filter</p>
+            </>
+        )
+    }
+
+    if (isNew) {
+        return <>
+            <p>Type to find countries</p>
+        </>
+
+    }
+
+    if (countries.length === 0) {
+        return (
+            <>
+                <p>No matches</p>
             </>
         )
     }
@@ -30,4 +45,4 @@ const Display = ({ country, countries, showSpecificCountry }) => {
     )
 }
 
-export default Display
+export default ListedCountries

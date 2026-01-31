@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import Searchbar from "./Components/Searchbar.jsx";
 import countryService from "./services/countries.js"
-import Display from "./Components/Display.jsx"
-import { use } from "react";
+import weatherService from "./services/weather.js"
+import ListedCountries from "./Components/ListedCountries.jsx"
+
 
 const App = () => {
-    const [countries, setCountries] = useState([])
+    const [allCountries, setCountries] = useState([])
     const [searchWord, setSearchWord] = useState("")
     const [filteredCountries, setFilteredCountries] = useState([])
     const [selectedCountry, setSelectedCountry] = useState(null)
+    const [countryWeather, setWeather] = useState(null)
+    const [isNew, setIsNew] = useState(true)
 
     useEffect(() => {
         countryService
@@ -17,6 +20,23 @@ const App = () => {
                 setCountries(initialCountries)
             })
     }, [])
+
+
+    useEffect(() => {
+
+        if (!selectedCountry) {
+            setWeather(null)
+            return
+        }
+        weatherService
+            .getTemperature(selectedCountry.capital[0], selectedCountry.cca2)
+            .then(weather => {
+                setWeather(weather)
+                console.log("weather", weather)
+            })
+
+    }, [selectedCountry])
+
 
     const showSpecificCountry = (countryName) => {
         countryService.
@@ -28,6 +48,7 @@ const App = () => {
     }
 
     const handleSearchChange = (event) => {
+        setIsNew(false)
         event.preventDefault()
         const searchWordObject = event.target.value.toLowerCase()
         setSearchWord(searchWordObject)
@@ -36,15 +57,14 @@ const App = () => {
 
         filteredCountriesObject.length === 1
             ? setSelectedCountry(filteredCountriesObject[0])
-            : setSelectedCountry(null)
+            : setSelectedCountry(null);
 
     }
 
-
     const filterCountries = (searchWord) => {
         const filteredCountriesObject = searchWord === ""
-            ? countries
-            : countries.filter(c => c.name.common.toLowerCase().includes(searchWord))
+            ? allCountries
+            : allCountries.filter(c => c.name.common.toLowerCase().includes(searchWord))
 
         setFilteredCountries(filteredCountriesObject)
 
@@ -55,7 +75,7 @@ const App = () => {
     return (
         <div>
             <Searchbar searchWord={searchWord} handleSearchChange={handleSearchChange} />
-            <Display country={selectedCountry} countries={filteredCountries} showSpecificCountry={showSpecificCountry} />
+            <ListedCountries country={selectedCountry} weather={countryWeather} countries={filteredCountries} isNew={isNew} showSpecificCountry={showSpecificCountry} />
         </div>
     )
 }

@@ -1,6 +1,10 @@
 import countries from "../services/countries.js";
 
-const Country = ({ country }) => {
+const Country = ({ country, weather }) => {
+
+
+    if (!weather) { return }
+
     return (
         <>
             <h1>{country.name.common}</h1>
@@ -20,6 +24,15 @@ const Country = ({ country }) => {
                     src={country.flags.png}
                     width={200}
                 />
+            </div>
+            <div>
+                <h2>Weather in {country.capital}</h2>
+                <p>Temperature {weather.main.temp} Celsius</p>
+                <img
+                    src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                    width={100}
+                />
+                <p>Wind {weather.wind.speed} m/s</p>
             </div>
         </>
     )
