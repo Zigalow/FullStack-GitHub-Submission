@@ -1,7 +1,17 @@
 const express = require('express')
 const app = express()
+var morgan = require('morgan')
+
+morgan.token('post', (req) => {
+    return req.method === 'POST' ? JSON.stringify(req.body) : ' '
+})
 
 app.use(express.json())
+app.use(
+    morgan(':method :url :status :res[content-length] - :response-time ms :post'),
+)
+
+
 
 let persons = [
     {
@@ -53,8 +63,6 @@ app.post('/api/persons', (request, response) => {
 
     const body = request.body
 
-    console.log("request body", body)
-
     if (!body.number) {
         return response.status(400).json(
             { error: 'number is missing' }
@@ -79,25 +87,13 @@ app.post('/api/persons', (request, response) => {
     }
 
 
-    console.log("Person before getting id", person)
-
-
     while (!person.id || persons.map(p => p.id).includes(persons.id)) {
-
-
-
         person.id = String(getRandomIntInclusive(1, 10000))
-        console.log("Person after getting id", person)
-
     }
-
-
 
     persons = persons.concat(person)
 
     response.json(person)
-
-
 })
 
 
