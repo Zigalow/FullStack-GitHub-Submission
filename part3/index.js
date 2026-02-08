@@ -49,6 +49,66 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 
+app.post('/api/persons', (request, response) => {
+
+    const body = request.body
+
+    console.log("request body", body)
+
+    if (!body.number) {
+        return response.status(400).json(
+            { error: 'number is missing' }
+        )
+    }
+
+    if (!body.name) {
+        return response.status(400).json(
+            { error: 'name is missing' }
+        )
+    }
+
+    if (persons.map(p => p.name).includes(body.name)) {
+        return response.status(409).json(
+            { error: 'name must be unique' }
+        )
+    }
+
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+
+
+    console.log("Person before getting id", person)
+
+
+    while (!person.id || persons.map(p => p.id).includes(persons.id)) {
+
+
+
+        person.id = String(getRandomIntInclusive(1, 10000))
+        console.log("Person after getting id", person)
+
+    }
+
+
+
+    persons = persons.concat(person)
+
+    response.json(person)
+
+
+})
+
+
+function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+}
+
+
+
 app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id
     persons = persons.filter(p => p.id !== id)
