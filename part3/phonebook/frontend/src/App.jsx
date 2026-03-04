@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Filter from "./Components/Filter.jsx";
 import PersonForm from "./Components/PersonForm.jsx";
 import Persons from "./Components/Persons.jsx";
@@ -56,7 +56,7 @@ const App = () => {
 
     const handleDuplicate = (newPersonObject, newNumber) => {
         const personToUpdate = persons.find(p => p.name.includes(newPersonObject.name))
-        const updatedPerson = {...personToUpdate, number: newNumber}
+        const updatedPerson = { ...personToUpdate, number: newNumber }
 
         personService
             .update(personToUpdate.id, updatedPerson)
@@ -105,17 +105,17 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={notificationMessage} type={notificationType}/>
-            <Filter searchWord={searchWord} handleSearchChange={handleSearchChange}/>
+            <Notification message={notificationMessage} type={notificationType} />
+            <Filter searchWord={searchWord} handleSearchChange={handleSearchChange} />
             <h3>add a new </h3>
 
             <PersonForm addPerson={addPerson}
-                        newName={newName}
-                        handleNameChange={handleNameChange}
-                        newNumber={newNumber}
-                        handleNumberChange={handleNumberChange}/>
+                newName={newName}
+                handleNameChange={handleNameChange}
+                newNumber={newNumber}
+                handleNumberChange={handleNumberChange} />
             <h2>Numbers</h2>
-            <Persons filteredPersons={filteredPersons} deletePerson={deletePerson}/>
+            <Persons filteredPersons={filteredPersons} deletePerson={deletePerson} />
         </div>
     )
 }

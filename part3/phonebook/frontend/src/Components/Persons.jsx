@@ -1,4 +1,4 @@
-const Persons = ({filteredPersons, deletePerson}) => {
+const Persons = ({ filteredPersons, deletePerson }) => {
     const label = "delete"
     return (
         <>
