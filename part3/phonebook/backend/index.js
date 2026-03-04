@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
+const Person = require('./models/person.js')
+
 const app = express()
-const cors = require('cors')
 var morgan = require('morgan')
 
 morgan.token('post', (req) => {
@@ -9,12 +11,9 @@ morgan.token('post', (req) => {
 
 app.use(express.json())
 app.use(express.static('dist'))
-app.use(cors())
 app.use(
     morgan(':method :url :status :res[content-length] - :response-time ms :post'),
 )
-
-
 
 
 let persons = [
@@ -41,25 +40,16 @@ let persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(person => {
+        response.json(person)
+    })
 })
 
-const infoText = persons.length === 0
-    ? `Phonebook does not currently have info on any people`
-    : persons.length === 1
-        ? `Phonebook has info for 1 person`
-        : `Phonebook has info for ${persons.length} people`
-
 app.get('/api/persons/:id', (request, response) => {
-    const id = request.params.id
-    const person = persons.find(p => p.id === id)
-
-    if (person) {
+    console.log("id", request.params.id)
+    Person.findById(request.params.id.toString()).then(person => {
         response.json(person)
-    }
-    else {
-        response.status(404).end()
-    }
+    })
 })
 
 
@@ -116,6 +106,11 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
+const infoText = Person.length === 0
+    ? `Phonebook does not currently have info on any people`
+    : Person.length === 1
+        ? `Phonebook has info for 1 person`
+        : `Phonebook has info for ${persons.length} people`
 
 
 app.get('/info', (request, response) => {
@@ -133,9 +128,7 @@ app.get('/info', (request, response) => {
 })
 
 
-
-
-
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+})
