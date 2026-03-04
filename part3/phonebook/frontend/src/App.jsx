@@ -52,6 +52,10 @@ const App = () => {
                 setNewName("")
                 setNewNumber("")
             })
+            .catch(error => {
+                setNotificationType("error")
+                setNotificationMessage(`Failed to add person to phonebook. Please enter both a name and a number`)
+            })
     }
 
     const handleDuplicate = (newPersonObject, newNumber) => {
