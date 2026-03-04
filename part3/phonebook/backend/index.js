@@ -69,33 +69,15 @@ app.post('/api/persons', (request, response) => {
         )
     }
 
-    if (persons.map(p => p.name).includes(body.name)) {
-        return response.status(409).json(
-            { error: 'name must be unique' }
-        )
-    }
-
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number
-    }
+    })
 
-
-    while (!person.id || persons.map(p => p.id).includes(persons.id)) {
-        person.id = String(getRandomIntInclusive(1, 10000))
-    }
-
-    persons = persons.concat(person)
-
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
-
-
-function getRandomIntInclusive(min, max) {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
-}
 
 
 
