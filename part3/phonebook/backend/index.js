@@ -15,45 +15,25 @@ app.use(
     morgan(':method :url :status :res[content-length] - :response-time ms :post'),
 )
 
-
-let persons = [
-    {
-        "id": "1",
-        "name": "Arto Hellas",
-        "number": "040-123456"
-    },
-    {
-        "id": "2",
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523"
-    },
-    {
-        "id": "3",
-        "name": "Dan Abramov",
-        "number": "12-43-234345"
-    },
-    {
-        "id": "4",
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122"
-    }
-]
-
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
     Person.find({}).then(person => {
         response.json(person)
     })
+        .catch(error => { next(error) })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     console.log("id", request.params.id)
     Person.findById(request.params.id.toString()).then(person => {
         response.json(person)
     })
+        .then(error => {
+            next(error)
+        })
 })
 
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
 
     const body = request.body
 
@@ -77,28 +57,27 @@ app.post('/api/persons', (request, response) => {
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
+        .catch(error => { next(error) })
 })
 
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id).then(result => {
         response.status(204).end()
     })
+        .catch(error => {
+            next(error)
+        })
 })
 
 const infoText = Person.length === 0
     ? `Phonebook does not currently have info on any people`
     : Person.length === 1
         ? `Phonebook has info for 1 person`
-        : `Phonebook has info for ${persons.length} people`
+        : `Phonebook has info for ${Person.length} people`
 
 
 app.get('/info', (request, response) => {
-
-    const currentDate = new Date().toLocaleString();
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
-
     response.send(`
           <div>
                 <p>${infoText}</p>
@@ -106,6 +85,25 @@ app.get('/info', (request, response) => {
             </div>
            `)
 })
+
+const unknownEndpoint = (request, response) => {
+    return response.status(404).send({ error: 'unknown endpoint' })
+}
+
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.log(error)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT
