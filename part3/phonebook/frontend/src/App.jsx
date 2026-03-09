@@ -78,11 +78,16 @@ const App = () => {
         setNewNumber("");
       })
       .catch((error) => {
-        setPersons(persons.filter((p) => p.id !== personToUpdate.id));
-        setNotificationMessage(
-          `Information of ${updatedPerson.name} has already been removed from the server`,
-        );
-        setNotificationType("error");
+        if (error.response.status === 404) {
+          setPersons(persons.filter((p) => p.id !== personToUpdate.id));
+          setNotificationMessage(
+            `Information of ${updatedPerson.name} has already been removed from the server`,
+          );
+          setNotificationType("error");
+        } else {
+          setNotificationType("error");
+          setNotificationMessage(error.response.data.error);
+        }
       });
   };
 
@@ -90,9 +95,10 @@ const App = () => {
     const shouldDelete = window.confirm(`Delete ${personName}?`);
 
     if (shouldDelete) {
-      personService.deleteObject(id).then((deletedPerson) => {
+      personService.deleteObject(id).then(() => {
+        const deletedPersonName = persons.find((p) => p.id === id).name;
         setPersons(persons.filter((p) => p.id !== id));
-        setNotificationMessage(`Deleted ${deletedPerson.name}`);
+        setNotificationMessage(`Deleted ${deletedPersonName}`);
       });
     }
   };
