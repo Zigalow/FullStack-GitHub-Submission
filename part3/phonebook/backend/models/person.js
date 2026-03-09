@@ -21,7 +21,14 @@ const personSchema = new mongoose.Schema({
         minLength: 3,
         required: true
     },
-    number: String,
+    number: {
+        type: String,
+        minLength: 8,
+        validate: {
+            validator: v => /^\d{2,3}-\d+$/.test(v),
+            message: 'Phone number must contain 2-3 numbers followed by a dash followed by numbers like 00-00000 or 000-0000'
+        }
+    }
 })
 
 personSchema.set('toJSON', {
