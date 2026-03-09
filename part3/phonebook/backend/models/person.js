@@ -27,7 +27,8 @@ const personSchema = new mongoose.Schema({
         validate: {
             validator: v => /^\d{2,3}-\d+$/.test(v),
             message: 'Phone number must contain 2-3 numbers followed by a dash followed by numbers like 00-00000 or 000-0000'
-        }
+        },
+        required: true
     }
 })
 
