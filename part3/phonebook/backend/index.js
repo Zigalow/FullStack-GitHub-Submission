@@ -24,12 +24,11 @@ app.get('/api/persons', (request, response, next) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
     console.log("id", request.params.id)
-    Person.findById(request.params.id.toString()).then(person => {
+    Person.findById(request.params.id).then(person => {
         response.json(person)
+    }).catch(error => {
+        next(error)
     })
-        .then(error => {
-            next(error)
-        })
 })
 
 
@@ -58,6 +57,30 @@ app.post('/api/persons', (request, response, next) => {
         response.json(savedPerson)
     })
         .catch(error => { next(error) })
+})
+
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const { name, number } = request.body
+
+    Person.findById(request.body.id).then(person => {
+        if (!person) {
+            return response.status(404).end()
+        }
+
+        person.name = name
+        person.number = number
+
+
+        person.save().then(updatedPerson => {
+            response.json(updatedPerson).end()
+
+        })
+            .catch(error => { next(error) })
+
+    })
+        .catch(error => { next(error) })
+
 })
 
 
