@@ -23,7 +23,7 @@ app.get('/api/persons', (request, response, next) => {
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-    console.log("id", request.params.id)
+    console.log('id', request.params.id)
     Person.findById(request.params.id).then(person => {
         response.json(person)
     }).catch(error => {
@@ -73,7 +73,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    Person.findByIdAndDelete(request.params.id).then(result => {
+    Person.findByIdAndDelete(request.params.id).then(() => {
         response.status(204).end()
     })
         .catch(error => {
@@ -82,9 +82,9 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 const infoText = Person.length === 0
-    ? `Phonebook does not currently have info on any people`
+    ? 'Phonebook does not currently have info on any people'
     : Person.length === 1
-        ? `Phonebook has info for 1 person`
+        ? 'Phonebook has info for 1 person'
         : `Phonebook has info for ${Person.length} people`
 
 
