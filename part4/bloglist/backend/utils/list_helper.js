@@ -56,7 +56,7 @@ const mostBlogs = (blogs) => {
 
 
 
-    aggregatedBlogsWithAuthors.forEach(e => {
+    naggregatedBlogsWithAuthors.forEach(e => {
         if (e.blogs > authorWithMostBlogs.blogs) {
             authorWithMostBlogs = e;
         }
@@ -109,4 +109,5 @@ module.exports = {
     favoriteBlog,
     mostBlogs,
     mostLikes,
+
 }

@@ -125,13 +125,13 @@ describe('total likes', () => {
     })
 
 
-    describe('most blog', () => {
+    describe('most likes', () => {
         test('equals author and number of blogs for author with most amount of blogs from lits with many blogs')
 
-        const result = listHelper.mostBlogs(blogs);
+        const result = listHelper.mostLikes(blogs);
         const expectedResult = {
-            author: "Robert C. Martin",
-            blogs: 3
+            author: "Edsger W. Dijkstra",
+            likes: 17
         }
         assert.deepStrictEqual(result, expectedResult)
     })
