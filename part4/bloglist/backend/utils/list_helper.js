@@ -67,10 +67,46 @@ const mostBlogs = (blogs) => {
 }
 
 
+const mostLikes = (blogs) => {
+
+    let aggregatedBlogsWithAuthors = [];
+
+
+    blogs.forEach(b => {
+        if (aggregatedBlogsWithAuthors.some(obj => obj.author === b.author)) {
+            console.log(`Author: ${b.author} is in list`);
+
+            aggregatedBlogsWithAuthors = aggregatedBlogsWithAuthors.map(obj =>
+                obj.author === b.author
+                    ? { author: obj.author, likes: obj.likes + b.likes }
+                    : obj
+            )
+        }
+        else {
+            console.log(`Adding author: ${b.author} to list`);
+            aggregatedBlogsWithAuthors = aggregatedBlogsWithAuthors.concat({ author: b.author, likes: b.likes })
+        }
+        console.log("Status of list: ", aggregatedBlogsWithAuthors);
+
+    })
+    let authorWithMostBlogs = aggregatedBlogsWithAuthors[0];
+
+
+    aggregatedBlogsWithAuthors.forEach(e => {
+        if (e.likes > authorWithMostBlogs.likes) {
+            authorWithMostBlogs = e;
+        }
+    });
+
+
+    return authorWithMostBlogs;
+}
+
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
     mostBlogs,
-
+    mostLikes,
 }
