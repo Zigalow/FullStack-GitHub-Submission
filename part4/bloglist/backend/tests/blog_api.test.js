@@ -53,9 +53,32 @@ test('a valid blog can be added and correctly created in database', async () => 
     assert.deepEqual(newBlog.author, response.body.author)
     assert.deepEqual(newBlog.url, response.body.url)
     assert.deepEqual(newBlog.likes, response.body.likes)
+})
+
+test('when adding a blog without a \'likes\' property, the value of will default to 0', async () => {
+
+    const newBlog = {
+        title: "This is how I created a new note in test with no LIKES!!!!!",
+        author: "Zig Zag",
+        url: "https://createdNoteInTest.fakecom/",
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
 
 
+    const blogsAtEnd = await helper.blogsInDb()
+    console.log('response',)
 
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+    assert.deepEqual(newBlog.title, response.body.title)
+    assert.deepEqual(newBlog.author, response.body.author)
+    assert.deepEqual(newBlog.url, response.body.url)
+    assert.deepEqual(0, response.body.likes)
 })
 
 after(async () => [
