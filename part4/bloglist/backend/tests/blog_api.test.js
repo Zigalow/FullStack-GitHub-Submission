@@ -20,12 +20,42 @@ test('correct amount of notes are returned', async () => {
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
-test.only('blogs has id as an unique identifier', async () => {
+test('blogs has id as an unique identifier', async () => {
     const blogs = await helper.blogsInDb()
 
     const ids = blogs.map(b => b.id)
 
     assert(!ids.some(i => i === undefined))
+})
+
+test('a valid blog can be added and correctly created in database', async () => {
+
+    const newBlog = {
+        title: "This is how I created a new note in test!!!",
+        author: "Zig Zag",
+        url: "https://createdNoteInTest.fakecom/",
+        likes: 9000,
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+
+    const blogsAtEnd = await helper.blogsInDb()
+    console.log('response',)
+
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+    assert.deepEqual(newBlog.title, response.body.title)
+    assert.deepEqual(newBlog.author, response.body.author)
+    assert.deepEqual(newBlog.url, response.body.url)
+    assert.deepEqual(newBlog.likes, response.body.likes)
+
+
+
 })
 
 after(async () => [
