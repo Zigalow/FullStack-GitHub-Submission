@@ -36,7 +36,6 @@ const mostBlogs = (blogs) => {
 
     blogs.forEach(b => {
         if (aggregatedBlogsWithAuthors.some(obj => obj.author === b.author)) {
-            console.log(`Author: ${b.author} is in list`);
 
             aggregatedBlogsWithAuthors = aggregatedBlogsWithAuthors.map(obj =>
                 obj.author === b.author
@@ -45,11 +44,8 @@ const mostBlogs = (blogs) => {
             )
         }
         else {
-            console.log(`Adding author: ${b.author} to list`);
             aggregatedBlogsWithAuthors = aggregatedBlogsWithAuthors.concat({ author: b.author, blogs: 1 })
-
         }
-        console.log("Status of list: ", aggregatedBlogsWithAuthors);
 
     })
     let authorWithMostBlogs = aggregatedBlogsWithAuthors[0];
@@ -74,8 +70,6 @@ const mostLikes = (blogs) => {
 
     blogs.forEach(b => {
         if (aggregatedBlogsWithAuthors.some(obj => obj.author === b.author)) {
-            console.log(`Author: ${b.author} is in list`);
-
             aggregatedBlogsWithAuthors = aggregatedBlogsWithAuthors.map(obj =>
                 obj.author === b.author
                     ? { author: obj.author, likes: obj.likes + b.likes }
@@ -83,11 +77,8 @@ const mostLikes = (blogs) => {
             )
         }
         else {
-            console.log(`Adding author: ${b.author} to list`);
             aggregatedBlogsWithAuthors = aggregatedBlogsWithAuthors.concat({ author: b.author, likes: b.likes })
         }
-        console.log("Status of list: ", aggregatedBlogsWithAuthors);
-
     })
     let authorWithMostBlogs = aggregatedBlogsWithAuthors[0];
 

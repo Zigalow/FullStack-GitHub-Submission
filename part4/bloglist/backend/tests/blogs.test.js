@@ -110,42 +110,27 @@ describe('total likes', () => {
 
     test('calculates total likes of list with many blogs correclty', () => {
 
-
-
-
         const result = listHelper.totalLikes(listWithManyBlogs)
         assert.strictEqual(result, 270)
     })
 
     describe('favorite blog', () => {
-        test('equals blog with most likes from list with many blogs')
+        test('equals blog with most likes from list with many blogs', () => {
 
-        const result = listHelper.favoriteBlog(blogs);
-        assert.deepStrictEqual(result, blogs[2])
-    })
-
-
-    describe('most likes', () => {
-        test('equals author and number of blogs for author with most amount of blogs from lits with many blogs')
-
-        const result = listHelper.mostLikes(blogs);
-        const expectedResult = {
-            author: "Edsger W. Dijkstra",
-            likes: 17
-        }
-        assert.deepStrictEqual(result, expectedResult)
+            const result = listHelper.favoriteBlog(blogs);
+            assert.deepStrictEqual(result, blogs[2])
+        })
     })
 
     describe('most likes', () => {
-        test('equals author and number of blogs for author with most amount of blogs from lits with many blogs')
+        test('equals author and number of blogs for author with most amount of blogs from lits with many blogs', () => {
 
-        const result = listHelper.mostLikes(blogs);
-        const expectedResult = {
-            author: "Edsger W. Dijkstra",
-            likes: 17
-        }
-        assert.deepStrictEqual(result, expectedResult)
+            const result = listHelper.mostLikes(blogs);
+            const expectedResult = {
+                author: "Edsger W. Dijkstra",
+                likes: 17
+            }
+            assert.deepStrictEqual(result, expectedResult)
+        })
     })
-
-
 })
