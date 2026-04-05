@@ -14,10 +14,18 @@ beforeEach(async () => {
 })
 
 
-test.only('correct amount of notes are returned', async () => {
+test('correct amount of notes are returned', async () => {
     const response = await api.get('/api/blogs')
 
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
+})
+
+test.only('blogs has id as an unique identifier', async () => {
+    const blogs = await helper.blogsInDb()
+
+    const ids = blogs.map(b => b.id)
+
+    assert(!ids.some(i => i === undefined))
 })
 
 after(async () => [
