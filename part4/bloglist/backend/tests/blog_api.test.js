@@ -45,8 +45,6 @@ test('a valid blog can be added and correctly created in database', async () => 
 
 
     const blogsAtEnd = await helper.blogsInDb()
-    console.log('response',)
-
 
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
     assert.deepEqual(newBlog.title, response.body.title)
@@ -79,6 +77,45 @@ test('when adding a blog without a \'likes\' property, the value of will default
     assert.deepEqual(newBlog.author, response.body.author)
     assert.deepEqual(newBlog.url, response.body.url)
     assert.deepEqual(0, response.body.likes)
+})
+
+
+test('when adding a blog without a \'title\' property, server responds with 400', async () => {
+
+    const newBlog = {
+        author: "Zig Zag",
+        url: "https://createdNoteInTest.fakecom/",
+        likes: 9000
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
+test('when adding a blog without a \'url\' property, server responds with 400', async () => {
+
+    const newBlog = {
+        title: "This won't get created hehe",
+        author: "Zig Zag",
+        likes: 9000
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
 
 after(async () => [
